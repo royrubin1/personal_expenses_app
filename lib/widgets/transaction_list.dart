@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/transaction.dart';
 import 'package:intl/intl.dart';
 
+import 'transaction_item.dart';
+
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function deleteTx;
@@ -33,40 +35,8 @@ class TransactionList extends StatelessWidget {
           })
         : ListView.builder(
             itemBuilder: (context, index) {
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                elevation: 5,
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: FittedBox(
-                          child: Text('\$${transactions[index].amount}')),
-                    ),
-                  ),
-                  title: Text(
-                    transactions[index].title,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  subtitle: Text(
-                      DateFormat.yMMMMd().format(transactions[index].date)),
-                  trailing: MediaQuery.of(context).size.width > 400
-                      ? TextButton.icon(
-                          icon: Icon(Icons.delete),
-                          label: Text('Delete'),
-                          style: TextButton.styleFrom(
-                            foregroundColor: Theme.of(context).errorColor,
-                          ),
-                          onPressed: () => deleteTx(transactions[index].id),
-                        )
-                      : IconButton(
-                          icon: const Icon(Icons.delete),
-                          color: Theme.of(context).errorColor,
-                          onPressed: () => deleteTx(transactions[index].id),
-                        ),
-                ),
-              );
+              return TransactionItem(
+                  transaction: transactions[index], deleteTx: deleteTx);
             },
             itemCount: transactions.length,
           );
